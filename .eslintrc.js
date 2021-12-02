@@ -16,5 +16,11 @@ module.exports = {
   plugins: [
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    'max-len': ['error', { code: 120 }],
+    'vue/max-len': ['error', {
+      code: 120,
+      template: 100,
+    }],
+  }
 }

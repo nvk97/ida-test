@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'ida-test',
+    title: 'Тестовое задание IDA.project | 02.12.2021',
     htmlAttrs: {
       lang: 'en'
     },

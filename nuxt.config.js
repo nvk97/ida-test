@@ -21,6 +21,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/directives.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -34,9 +35,12 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/composition-api/module'
+    '@nuxtjs/composition-api/module',
+    '@nuxtjs/style-resources'
   ],
-
+  styleResources: {
+    scss: ['./assets/scss/abstract/*.scss']
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }

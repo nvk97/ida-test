@@ -10,6 +10,7 @@ module.exports = {
   },
   extends: [
     '@nuxtjs',
+    'airbnb-base',
     'plugin:nuxt/recommended',
     'prettier'
   ],
@@ -22,5 +23,7 @@ module.exports = {
       code: 120,
       template: 100,
     }],
+    'import/no-unresolved': "off",
+    'import/extensions':"off",
   }
 }

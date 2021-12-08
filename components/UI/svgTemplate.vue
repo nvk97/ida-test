@@ -16,7 +16,16 @@ export default {
 </script>
 
 <template>
-  <svg class="svg-icon" :class="cssClass">
+  <svg class="svg-icon">
     <use :xlink:href="hrefName" width="100%" height="100%" />
   </svg>
 </template>
+
+<style lang="scss">
+.svg-icon {
+  height: 30px;
+  width: 30px;
+  fill: currentColor;
+  stroke: currentColor;
+}
+</style>

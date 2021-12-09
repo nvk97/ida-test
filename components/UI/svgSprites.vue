@@ -21,6 +21,17 @@
         </defs>
       </svg>
     </symbol>
+    <symbol id="sort-inc" viewBox="0 0 8 8">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" ><path d="M0 0h4v2H0zm0 3h6v2H0zm0 3h8v2H0z" stroke="none"/></svg>
+    </symbol>
+    <symbol id="sort-dec" viewBox="0 0 8 8">
+       <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><path d="M0 6h4v2H0zm0-3h6v2H0zm0-3h8v2H0z" stroke="none"/></svg>
+    </symbol>
+    <symbol id="check" viewBox="0 0 24 24">
+      <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9.00001 16.17L5.53001 12.7C5.14002 12.31 4.51001 12.31 4.12001 12.7C3.73001 13.09 3.73001 13.72 4.12001 14.11L8.30001 18.29C8.69001 18.68 9.32001 18.68 9.71001 18.29L20.29 7.71001C20.68 7.32001 20.68 6.69001 20.29 6.30001C19.9 5.91001 19.27 5.91001 18.88 6.30001L9.00001 16.17Z"/>
+    </svg>
+    </symbol>
   </svg>
 </template>
 

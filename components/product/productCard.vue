@@ -54,7 +54,6 @@ export default {
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out;
   display: flex;
-  align-self: stretch;
   flex-direction: column;
   position: relative;
   &__image {
@@ -90,12 +89,18 @@ export default {
       line-height: 1.25;
       font-weight: 600;
       margin-bottom: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     &--description {
+      width: 100%;
       color: $black;
+      height: 80px;
       font-size: 16px;
       line-height: 1.25;
       margin-bottom: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     &--price {
       color: $black;

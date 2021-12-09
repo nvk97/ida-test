@@ -7,6 +7,7 @@ import Uselect from '@/components/utils/Uselect.vue'
 // composition
 import useProductAdditionForm from '@/composables/useProductAdditionForm.js'
 import useProductCard from '@/composables/useProductCard.js'
+import useProductSortingSelect from '@/composables/useProductSortingSelect'
 
 export default defineComponent({
   components: {
@@ -16,9 +17,18 @@ export default defineComponent({
   },
   setup() {
     const { productAdditionFormFields } = useProductAdditionForm()
-    const { productsList, unshiftNewProduct, checkLocalStorageData, handleDeleteProductById } = useProductCard()
+    const { productsList, unshiftNewProduct, checkLocalStorageData, handleDeleteProductById } =
+      useProductCard()
+    const { sortingTypes, sortProductList } = useProductSortingSelect(productsList)
     onBeforeMount(checkLocalStorageData)
-    return { productAdditionFormFields, productsList, unshiftNewProduct, handleDeleteProductById }
+    return {
+      productAdditionFormFields,
+      productsList,
+      unshiftNewProduct,
+      handleDeleteProductById,
+      sortingTypes,
+      sortProductList
+    }
   },
 })
 </script>
@@ -28,7 +38,7 @@ export default defineComponent({
     <section class="container">
       <div class="products-header">
         <h1 class="title">Добавление товара</h1>
-        <uselect />
+        <uselect :select-data="sortingTypes" @sort-product-list="sortProductList"/>
       </div>
     </section>
     <section class="container products">
@@ -66,7 +76,7 @@ export default defineComponent({
     grid-gap: 16px;
     align-self: start;
     grid-column: span 3 / span 3;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat( 3, minmax(calc(33.33% - 16px), 1fr) );
   }
 }
 </style>

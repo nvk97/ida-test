@@ -8,6 +8,7 @@ export default function useProductCard() {
     const unshiftNewProduct = (val) => {
         const newProduct = cloneDeep(val)
         newProduct.id = nanoid(10)
+        newProduct.createdAt = Date.now()
         const localStorageProductsList = JSON.parse(localStorage.getItem('productList')) || []
         localStorageProductsList.unshift(newProduct)
         localStorage.setItem('productList', JSON.stringify(localStorageProductsList))

@@ -67,6 +67,7 @@ export default {
       class="u-input__input"
       :class="{ 'u-input__input--error': errorState !== 'hidden' }"
       type="text"
+      :maxlength="field.maxLength || null"
       :tabindex="tabindex"
       :placeholder="field.placeholder"
       @keyup="onKeyup"
@@ -78,6 +79,7 @@ export default {
       v-imask="mask"
       class="u-input__input"
       :tabindex="tabindex"
+      :maxlength="field.maxLength || null"
       rows="6"
       :placeholder="field.placeholder"
       @keyup="onKeyup"
@@ -104,7 +106,7 @@ export default {
     &--required-mark {
        position: absolute;
         right: -5px;
-        top: -5px;
+        top: -6px;
         width: 4px;
         height: 4px;
         color: $danger-red;

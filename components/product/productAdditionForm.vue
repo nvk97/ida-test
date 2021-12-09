@@ -113,12 +113,20 @@ export default {
     border-radius: 10px;
     background: #eeeeee;
     color: $gray;
-    transition: color 0.2s ease-in;
+    transition: color 0.2s ease-in, background 0.2s ease-in;
+    &:focus{
+       background: #cfcfcf;
+       color:#eeeeee;
+    }
     &--success {
       cursor: pointer;
       background: $success-green;
       color: #ffffff;
+      &:focus,&:hover{
+        background: $success-green__hover;
+      }
     }
+    
   }
 }
 </style>

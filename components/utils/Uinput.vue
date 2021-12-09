@@ -1,6 +1,5 @@
 <script>
-import { isEqual } from 'lodash'
-import {errorFieldInFormMessages} from '@/assets/js/utils/constants'
+import { errorFieldInFormMessages } from '@/assets/js/utils/constants'
 
 export default {
   props: {
@@ -31,20 +30,18 @@ export default {
     mask() {
       return 'mask' in this.field ? this.field.mask : null
     },
-    errorMessage(){
-      return this.errorState === 'hidden'?'':errorFieldInFormMessages[this.errorState]
-    }
+    errorMessage() {
+      return this.errorState === 'hidden' ? '' : errorFieldInFormMessages[this.errorState]
+    },
   },
   watch: {
     value(newVal) {
-      if (!isEqual(newVal, this.displayValue)) {
-        this.displayValue = newVal
-      }
+      if (newVal === null) this.displayValue = null
     },
   },
   methods: {
     onKeyup() {
-      if(this.errorState !=='hidden')this.$emit('clear-error-state-by-id',this.field.id)
+      if (this.errorState !== 'hidden') this.$emit('clear-error-state-by-id', this.field.id)
       if (this.field.valueType === 'number') {
         const newValue = ((this.displayValue || '').match(/\d/g) || []).join('')
         this.$emit('input', parseInt(newValue, 10) || null)
@@ -60,7 +57,7 @@ export default {
   <div class="u-input">
     <label :for="`u-input__${field.id}`" class="u-input__label">
       {{ field.label }}
-      <div v-if="field.isRequired" class="u-input__label--required-mark"></div>
+      <div v-if="field.isRequired" class="u-input__label--required-mark">.</div>
     </label>
     <input
       v-if="field.type === 'input'"
@@ -68,7 +65,7 @@ export default {
       v-model="displayValue"
       v-imask="mask"
       class="u-input__input"
-      :class="{ 'u-input__input--error': errorState !=='hidden' }"
+      :class="{ 'u-input__input--error': errorState !== 'hidden' }"
       type="text"
       :tabindex="tabindex"
       :placeholder="field.placeholder"
@@ -87,8 +84,7 @@ export default {
     />
     <div 
       class="u-input__error-message" 
-      :class="{ 'u-input__error-message--showed': errorState !=='hidden' }"
-    >
+      :class="{ 'u-input__error-message--showed': errorState !== 'hidden' }">
       {{ errorMessage }}
     </div>
   </div>
@@ -106,13 +102,14 @@ export default {
     cursor: pointer;
     position: relative;
     &--required-mark {
-      position: absolute;
-      right: -6px;
-      top: 0;
-      width: 4px;
-      height: 4px;
-      border-radius: 100%;
-      background: $danger-red;
+       position: absolute;
+        right: -5px;
+        top: -5px;
+        width: 4px;
+        height: 4px;
+        color: $danger-red;
+        font-size: 30px;
+        line-height: 0;
     }
   }
   &__input {
@@ -126,7 +123,7 @@ export default {
     padding: 10px 16px;
     transition: box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
     resize: none;
-    border:1px solid #fffefb;
+    border: 1px solid #fffefb;
     &::placeholder {
       color: $gray;
     }
@@ -138,18 +135,18 @@ export default {
       height: 10rem;
       text-align: start;
     }
-    &--error{
-     border:1px solid $danger-red;
+    &--error {
+      border: 1px solid $danger-red;
     }
   }
   &__error-message {
     visibility: hidden;
-    color:$danger-red;
+    color: $danger-red;
     opacity: 0;
-    font-size:8px;
+    font-size: 8px;
     height: 8px;
     transition: opacity 0.2s ease-in-out;
-    &--showed{
+    &--showed {
       visibility: visible;
       opacity: 1;
     }

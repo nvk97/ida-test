@@ -1,47 +1,77 @@
 <script>
+import 'epic-spinners/dist/lib/epic-spinners.min.css'
+import { SelfBuildingSquareSpinner } from 'epic-spinners/dist/lib/epic-spinners.min.js'
 import svgTemplate from '@/components/UI/svgTemplate.vue'
 
 export default {
-  components:{
-    svgTemplate
+  components: {
+    svgTemplate,
+    SelfBuildingSquareSpinner,
   },
-  props:{
-    productData:{
-      type:Object,
-      required:true,
+  props: {
+    productData: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      imgState: 'loading',
+      imgHref: this.productData.imageLink
     }
   },
-  computed:{
-    priceString(){
-      return this.productData.price <= 0 ? 'Бесплатно' : `${this.productData.price.toLocaleString()} руб.`
+  computed: {
+    priceString() {
+      return this.productData.price <= 0
+        ? 'Бесплатно'
+        : `${this.productData.price.toLocaleString()} руб.`
+    },
+  },
+  methods: {
+    deleteProduct() {
+      this.$emit('delete-product', this.productData.id)
+    },
+    imgLoaded() {
+      this.imgState = 'loaded'
+    },
+    imgDontLoaded() {
+      this.imgState = 'not-found'
+      this.imgHref = '/images/404.gif'
     }
   },
-  methods:{
-    deleteProduct(){
-      this.$emit('delete-product',this.productData.id)
-    }
-  }
 }
 </script>
 <template>
   <div class="product-card">
     <div class="product-card__image">
       <div class="product-card__image--wrapper">
+        <client-only>
+          <self-building-square-spinner
+            v-if="imgState === 'loading'"
+            class="product-card__image--loader"
+            :animation-duration="6000"
+            :size="40"
+            color="#ffffff"
+          />
+        </client-only>
         <img
           class="product-card__image--img"
-          :src="productData.imageLink"
+          :class="{ hidden: imgState === 'loading' }"
+          :src="imgHref"
+          @load.once="imgLoaded"
+          @error.once="imgDontLoaded"
         />
       </div>
     </div>
     <div class="product-card__info">
-      <div class="product-card__info--title">{{productData.name}}</div>
+      <div class="product-card__info--title">{{ productData.name }}</div>
       <div class="product-card__info--description">
-        {{productData.description}}
+        {{ productData.description }}
       </div>
-      <div class="product-card__info--price">{{priceString}}</div>
+      <div class="product-card__info--price">{{ priceString }}</div>
     </div>
     <div class="product-card__delete" @click="deleteProduct">
-      <svg-template class="product-card__delete--icon" :name="'delete-bucket'"/>
+      <svg-template class="product-card__delete--icon" :name="'delete-bucket'" />
     </div>
   </div>
 </template>
@@ -71,11 +101,25 @@ export default {
       right: 0;
       bottom: 0;
       max-width: 100%;
+      justify-content: center;
+      align-items: center;
+      background: $gray;
     }
     &--img {
       object-fit: cover;
       width: 100%;
       height: 100%;
+      opacity: 1;
+      transition: opacity 0.2s ease-in;
+      &.hidden {
+        opacity: 0;
+      }
+    }
+    &--loader {
+      position: relative;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%);
     }
   }
   &__info {
@@ -110,12 +154,12 @@ export default {
       margin-top: auto;
     }
   }
-  &__delete{
+  &__delete {
     position: absolute;
     visibility: none;
     opacity: 0;
     pointer-events: none;
-    top:-8px;
+    top: -8px;
     right: -11px;
     background: $danger-red;
     box-shadow: $box-shadow;
@@ -126,20 +170,20 @@ export default {
     justify-content: center;
     align-items: center;
     transition: 0.1s ease-in;
-    &--icon{
+    &--icon {
       width: 16px;
       height: 16px;
       color: white;
     }
-    &:hover{
+    &:hover {
       background: $danger-red__hover;
     }
   }
-  &:hover{
+  &:hover {
     box-shadow: $box-shadow-card__hover;
   }
-  &:hover &{
-    &__delete{
+  &:hover & {
+    &__delete {
       visibility: visible;
       opacity: 1;
       pointer-events: auto;

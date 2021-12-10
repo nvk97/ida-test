@@ -45,7 +45,6 @@ export default {
         if (this.errorState !== 'hidden') this.$emit('clear-error-state-by-id', this.field.id)
         if (this.field.valueType === 'number') {
           const newValue = ((this.displayValue || '').match(/\d/g) || []).join('')
-           console.log(newValue);
           this.$emit('input', parseInt(newValue, 10) === 0 ? parseInt(newValue, 10): parseInt(newValue, 10) || null)
         } else {
           this.$emit('input', this.displayValue === '' ? null : this.displayValue)

@@ -56,8 +56,8 @@ export default {
           : this.selectedOption.sortTypes[0]
     },
     checkLocalStorage(){
-      this.selectedOption = JSON.parse(localStorage.getItem('sortProductList')) ||  this.selectedOption
-      this.selectedSortType = JSON.parse(localStorage.getItem('sortProductList')).sortType || null
+      this.selectedOption = JSON.parse(`${localStorage.getItem('sortProductList')}`) ||  this.selectedOption
+      this.selectedSortType = JSON.parse(`${localStorage.getItem('sortProductList')}`)?.sortType || null
       this.state = 'displayed'
     }
   },

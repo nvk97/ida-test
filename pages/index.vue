@@ -27,7 +27,7 @@ export default defineComponent({
       unshiftNewProduct,
       handleDeleteProductById,
       sortingTypes,
-      sortProductList
+      sortProductList,
     }
   },
 })
@@ -38,7 +38,7 @@ export default defineComponent({
     <section class="container">
       <div class="products-header">
         <h1 class="title">Добавление товара</h1>
-        <uselect :select-data="sortingTypes" @sort-product-list="sortProductList"/>
+        <uselect :select-data="sortingTypes" @sort-product-list="sortProductList" />
       </div>
     </section>
     <section class="container products">
@@ -58,8 +58,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .products {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 16px;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 16px;
   margin-top: 16px;
   &-header {
     display: flex;
@@ -75,8 +75,32 @@ export default defineComponent({
     display: grid;
     grid-gap: 16px;
     align-self: start;
-    grid-column: span 3 / span 3;
-    grid-template-columns: repeat( 3, minmax(calc(33.33% - 16px), 1fr) );
+    grid-column: span 2/ span 2;
+    grid-template-columns: repeat(2, 2fr);
+    padding-bottom: 32px;
+    @include media('min','md'){
+      grid-column: span 2 / span 2;
+      grid-template-columns: repeat(2, minmax(calc(50% - 16px), 1fr));
+    }
+    @include media('min', 'lg') {
+      grid-column: span 3 / span 3;
+      grid-template-columns:repeat(3, minmax(calc(33.33% - 16px), 1fr));
+      
+    }
+    @include media('min', 'xl') {
+      grid-column: span 2 / span 2;
+      grid-template-columns: repeat(2, minmax(calc(50% - 16px), 1fr));
+    }
+    @include media('min', 'xxl') {
+      grid-column: span 3 / span 3;
+      grid-template-columns: repeat(3, minmax(calc(33.33% - 16px), 1fr));
+    }
+  }
+  @include media('min', 'xl') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @include media('min', 'xxl') {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 </style>

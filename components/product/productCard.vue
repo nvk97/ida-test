@@ -88,8 +88,8 @@ export default {
   position: relative;
   &__image {
     padding: 33%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     overflow: hidden;
     position: relative;
     width: 100%;

@@ -17,9 +17,15 @@ export default defineComponent({
   },
   setup() {
     const { productAdditionFormFields } = useProductAdditionForm()
-    const { productsList, unshiftNewProduct, checkLocalStorageData, handleDeleteProductById } =
-      useProductCard()
-    const { sortingTypes, sortProductList } = useProductSortingSelect(productsList)
+    const {
+      productsList,
+      unshiftNewProduct,
+      checkLocalStorageData,
+      handleDeleteProductById,
+      sortProductsList,
+      newProductId,
+    } = useProductCard()
+    const { sortingTypes } = useProductSortingSelect(productsList)
     onBeforeMount(checkLocalStorageData)
     return {
       productAdditionFormFields,
@@ -27,7 +33,8 @@ export default defineComponent({
       unshiftNewProduct,
       handleDeleteProductById,
       sortingTypes,
-      sortProductList,
+      sortProductsList,
+      newProductId,
     }
   },
 })
@@ -38,24 +45,30 @@ export default defineComponent({
     <section class="container">
       <div class="products-header">
         <h1 class="title">Добавление товара</h1>
-        <uselect :select-data="sortingTypes" @sort-product-list="sortProductList" />
+        <uselect :select-data="sortingTypes" @sort-products-list="sortProductsList" />
       </div>
     </section>
     <section class="container products">
-      <product-addition-form :fields="productAdditionFormFields" @newProduct="unshiftNewProduct" />
-      <section class="products-list">
+      <transition name="fade" appear>
+        <product-addition-form
+          :fields="productAdditionFormFields"
+          @newProduct="unshiftNewProduct"
+        />
+      </transition>
+      <transition-group name="products-list" :class="'products-list'" tag="ul" appear>
         <product-card
           v-for="product in productsList"
           :key="product.id"
+          :is-new-product="product.id === newProductId"
           :product-data="product"
           @delete-product="handleDeleteProductById"
         />
-      </section>
+      </transition-group>
     </section>
   </main>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .products {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -75,17 +88,16 @@ export default defineComponent({
     display: grid;
     grid-gap: 16px;
     align-self: start;
-    grid-column: span 2/ span 2;
+    grid-column: span 2 / span 2;
     grid-template-columns: repeat(2, 2fr);
     padding-bottom: 32px;
-    @include media('min','md'){
+    @include media('min', 'md') {
       grid-column: span 2 / span 2;
       grid-template-columns: repeat(2, minmax(calc(50% - 16px), 1fr));
     }
     @include media('min', 'lg') {
       grid-column: span 3 / span 3;
-      grid-template-columns:repeat(3, minmax(calc(33.33% - 16px), 1fr));
-      
+      grid-template-columns: repeat(3, minmax(calc(33.33% - 16px), 1fr));
     }
     @include media('min', 'xl') {
       grid-column: span 2 / span 2;

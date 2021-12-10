@@ -16,6 +16,7 @@ export default {
     return {
       fieldsValues: {},
       fieldsErrors: {},
+      isVisible:false,
       isMobileVisible: false,
     }
   },
@@ -29,6 +30,9 @@ export default {
     this.fieldsErrors = Object.fromEntries(
       new Map(this.fields.map((field) => [field.id, 'hidden']))
     )
+  },
+  mounted(){
+    this.isVisible = true
   },
   methods: {
     validateFields() {
@@ -82,29 +86,29 @@ export default {
 }
 </script>
 <template>
-  <aside class="product-form__wrapper">
-    <div class="product-form" :class="{'visible':isMobileVisible}">
-      <uinput
-        v-for="(field, index) in fields"
-        :key="field.id"
-        v-model="fieldsValues[field.id]"
-        :error-state="fieldsErrors[field.id]"
-        :field="field"
-        :tabindex="index + 1"
-        @clear-error-state-by-id="clearErrorStateById"
-      />
-      <button
-        class="product-form__button"
-        :class="{ 'product-form__button--success': isRequiredFieldIsFilled }"
-        :tabindex="fields.length + 1"
-        @click="addProductButtonClick"
-      >
-        Добавить товар
+  <aside v-if="isVisible" class="product-form__wrapper" >
+      <div class="product-form" :class="{ visible: isMobileVisible }">
+        <uinput
+          v-for="(field, index) in fields"
+          :key="field.id"
+          v-model="fieldsValues[field.id]"
+          :error-state="fieldsErrors[field.id]"
+          :field="field"
+          :tabindex="index + 1"
+          @clear-error-state-by-id="clearErrorStateById"
+        />
+        <button
+          class="product-form__button"
+          :class="{ 'product-form__button--success': isRequiredFieldIsFilled }"
+          :tabindex="fields.length + 1"
+          @click="addProductButtonClick"
+        >
+          Добавить товар
+        </button>
+      </div>
+      <button class="product-form__show" @click="isMobileVisible = !isMobileVisible">
+        {{ !isMobileVisible ? 'Открыть' : 'Скрыть' }} форму добавления товара
       </button>
-    </div>
-    <button class="product-form__show" @click="isMobileVisible = !isMobileVisible">
-      {{!isMobileVisible?'Открыть':'Скрыть'}} форму добавления товара
-    </button>
   </aside>
 </template>
 
@@ -118,7 +122,7 @@ export default {
   @include media('min', 'xl') {
     display: block;
   }
-  &.visible{
+  &.visible {
     display: block;
   }
   &__wrapper {

@@ -46,7 +46,7 @@ export default {
         else [this.selectedSortType] = select.sortTypes
       }
       this.hideDropdown()
-      this.$emit('sort-product-list',{...this.selectedOption,sortType:this.selectedSortType})
+      this.$emit('sort-products-list',{...this.selectedOption,sortType:this.selectedSortType})
     },
     changeSortType() {
       const sortIndex = this.selectedOption.sortTypes.indexOf(this.selectedSortType)+1
@@ -56,8 +56,8 @@ export default {
           : this.selectedOption.sortTypes[0]
     },
     checkLocalStorage(){
-      this.selectedOption = JSON.parse(`${localStorage.getItem('sortProductList')}`) ||  this.selectedOption
-      this.selectedSortType = JSON.parse(`${localStorage.getItem('sortProductList')}`)?.sortType || null
+      this.selectedOption = JSON.parse(`${localStorage.getItem('sortProductsList')}`) ||  this.selectedOption
+      this.selectedSortType = JSON.parse(`${localStorage.getItem('sortProductsList')}`)?.sortType || null
       this.state = 'displayed'
     }
   },

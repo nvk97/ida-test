@@ -1,0 +1,22 @@
+.products-list-enter-active,
+.products-list-leave-active {
+    transition: 0.3s ease-out;
+}
+.products-list-enter,
+.products-list-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+.products-list-move {
+    transition: transform 0.5s ease-out;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: 0.3s ease-out;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateX(-20px);
+}

@@ -36,18 +36,21 @@ export default {
   },
   watch: {
     value(newVal) {
-      if (newVal === null) this.displayValue = null
+        if (newVal === null) this.displayValue = null
     },
   },
   methods: {
     onKeyup() {
-      if (this.errorState !== 'hidden') this.$emit('clear-error-state-by-id', this.field.id)
-      if (this.field.valueType === 'number') {
-        const newValue = ((this.displayValue || '').match(/\d/g) || []).join('')
-        this.$emit('input', parseInt(newValue, 10) || null)
-      } else {
-        this.$emit('input', this.displayValue === '' ? null : this.displayValue)
-      }
+      this.$nextTick(() => {
+        if (this.errorState !== 'hidden') this.$emit('clear-error-state-by-id', this.field.id)
+        if (this.field.valueType === 'number') {
+          const newValue = ((this.displayValue || '').match(/\d/g) || []).join('')
+           console.log(newValue);
+          this.$emit('input', parseInt(newValue, 10) === 0 ? parseInt(newValue, 10): parseInt(newValue, 10) || null)
+        } else {
+          this.$emit('input', this.displayValue === '' ? null : this.displayValue)
+        }
+      })
     },
   },
 }
@@ -84,9 +87,10 @@ export default {
       :placeholder="field.placeholder"
       @keyup="onKeyup"
     />
-    <div 
-      class="u-input__error-message" 
-      :class="{ 'u-input__error-message--showed': errorState !== 'hidden' }">
+    <div
+      class="u-input__error-message"
+      :class="{ 'u-input__error-message--showed': errorState !== 'hidden' }"
+    >
       {{ errorMessage }}
     </div>
   </div>
@@ -104,14 +108,14 @@ export default {
     cursor: pointer;
     position: relative;
     &--required-mark {
-       position: absolute;
-        right: -5px;
-        top: -6px;
-        width: 4px;
-        height: 4px;
-        color: $danger-red;
-        font-size: 30px;
-        line-height: 0;
+      position: absolute;
+      right: -5px;
+      top: -6px;
+      width: 4px;
+      height: 4px;
+      color: $danger-red;
+      font-size: 30px;
+      line-height: 0;
     }
   }
   &__input {

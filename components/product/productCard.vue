@@ -8,16 +8,23 @@ export default {
     svgTemplate,
     SelfBuildingSquareSpinner,
   },
+  transition: {
+    name: 'slide-fade',
+  },
   props: {
     productData: {
       type: Object,
       required: true,
     },
+    isNewProduct: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       imgState: 'loading',
-      imgHref: this.productData.imageLink
+      imgHref: this.productData.imageLink,
     }
   },
   computed: {
@@ -27,8 +34,15 @@ export default {
         : `${this.productData.price.toLocaleString()} руб.`
     },
   },
+  mounted() {
+    if (this.isNewProduct) this.scrollToElement()
+  },
   methods: {
     deleteProduct() {
+      
+      this.emitDeleteProduct()
+    },
+    emitDeleteProduct() {
       this.$emit('delete-product', this.productData.id)
     },
     imgLoaded() {
@@ -36,47 +50,53 @@ export default {
     },
     imgDontLoaded() {
       this.imgState = 'not-found'
-      this.imgHref = '/images/404.gif'
-    }
+      this.imgHref = '/images/404.jpeg'
+    },
+    scrollToElement() {
+      const productCardElement = this.$refs['product-card']
+      if (productCardElement) productCardElement.scrollIntoView({ behavior: 'smooth' })
+    },
   },
 }
 </script>
 <template>
-  <div class="product-card">
-    <div class="product-card__image">
-      <div class="product-card__image--wrapper">
-        <client-only>
-          <self-building-square-spinner
-            v-if="imgState === 'loading'"
-            class="product-card__image--loader"
-            :animation-duration="6000"
-            :size="40"
-            color="#ffffff"
-          />
-        </client-only>
-        <img
-          class="product-card__image--img"
-          :class="{ hidden: imgState === 'loading' }"
-          :src="imgHref"
-          @load.once="imgLoaded"
-          @error.once="imgDontLoaded"
-        />
+    <li ref="product-card" product-card="product-card__wrapper">
+      <div  class="product-card" :class="{ 'product-card--new': isNewProduct }">
+        <div class="product-card__image">
+          <div class="product-card__image--wrapper">
+            <client-only>
+              <self-building-square-spinner
+                v-if="imgState === 'loading'"
+                class="product-card__image--loader"
+                :animation-duration="6000"
+                :size="40"
+                color="#ffffff"
+              />
+            </client-only>
+            <img
+              class="product-card__image--img"
+              :class="{ hidden: imgState === 'loading' }"
+              :src="imgHref"
+              @load.once="imgLoaded"
+              @error.once="imgDontLoaded"
+            />
+          </div>
+        </div>
+        <div class="product-card__info">
+          <div class="product-card__info--title">{{ productData.name }}</div>
+          <div class="product-card__info--description">
+            {{ productData.description }}
+          </div>
+          <div class="product-card__info--price">{{ priceString }}</div>
+        </div>
+        <div class="product-card__delete" @click="deleteProduct">
+          <svg-template class="product-card__delete--icon" :name="'delete-bucket'" />
+        </div>
       </div>
-    </div>
-    <div class="product-card__info">
-      <div class="product-card__info--title">{{ productData.name }}</div>
-      <div class="product-card__info--description">
-        {{ productData.description }}
-      </div>
-      <div class="product-card__info--price">{{ priceString }}</div>
-    </div>
-    <div class="product-card__delete" @click="deleteProduct">
-      <svg-template class="product-card__delete--icon" :name="'delete-bucket'" />
-    </div>
-  </div>
+    </li>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .product-card {
   background: #fffefb;
   box-shadow: $box-shadow-card;
@@ -86,6 +106,9 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+  &--new {
+    animation: 1s infinite alternate linear new-product-animation;
+  }
   &__image {
     padding: 33%;
     border-top-left-radius: 4px;
@@ -188,6 +211,17 @@ export default {
       opacity: 1;
       pointer-events: auto;
     }
+  }
+}
+@keyframes new-product-animation {
+  0% {
+    background-color: #ffffff;
+  }
+  50% {
+    background-color: #d0ffc9;
+  }
+  100% {
+    background-color: #ffffff;
   }
 }
 </style>
